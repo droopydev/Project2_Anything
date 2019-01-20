@@ -251,3 +251,72 @@ a.article:hover {
 	margin: 0;
 	padding-top: 10px;
 }
+
+/* ---------------------------------------------------
+    CAROUSEL
+----------------------------------------------------- */
+
+#magicCarousel {
+	width: 450px;
+	height: 450px;
+	background-color: black;
+	display: inline-block;
+}
+
+/*.carouselImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}*/
+
+.carousel-inner {
+	align-items: center;
+}
+
+.carousel-item {
+	width: 450px;
+	height: 450px;
+}
+
+.carouselImage {
+	height: 100%;
+	margin: auto;
+}
+
+/* ---------------------------------------------------
+    ACTIVITY PAGE
+----------------------------------------------------- */
+
+#details {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 30px;
+}
+
+#details p {
+	font-size: 18px;
+	margin: 2px 0 2px 0;
+	color: black;
+	font-weight: 400;
+}
+
+#details a {
+	font-size: 18px;
+	margin:  2px 0 2px 0;
+	color: grey;
+	font-weight: 400;
+}
+
+#details h6 {
+	color: grey;
+}
+
+.react-icons {
+	margin-right: 15px;
+	color: black;
+}
+
+.dropdown {
+	display: inline-block;
+	margin-left: 8px;
+}

@@ -13,12 +13,21 @@ CREATE TABLE IF NOT EXISTS activities (
     id SERIAL PRIMARY KEY,
     title TEXT,
     openingHours_id INTEGER,
-    address TEXT,
+    place_id INTEGER,
     imageURl TEXT,
     description TEXT,
     price INTEGER,
     category TEXT
 );
+
+CREATE TABLE IF NOT EXISTS places {
+	id SERIAL PRIMARY KEY,
+	shortDescription TEXT,
+	franchaise TEXT,
+	website TEXT,
+
+
+}
 
 
 CREATE TABLE IF NOT EXISTS openingHours (

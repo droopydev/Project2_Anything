@@ -48,20 +48,41 @@ app.engine('jsx', reactEngine);
  * ===================================
  */
 
-function getUser(request, object) {
-    var loggedin = request.cookies['loggedin'];
-    var userid = request.cookies['id']
-    let query = "SELECT * FROM users WHERE id ='"+userid+"'"
+// function getUser(request, data, callback, response) {
+//     var loggedin = request.cookies['loggedin'];
+//     var userid = request.cookies['id']
+//     let query = "SELECT * FROM users WHERE id ='"+userid+"'"
 
-    let user;
-    pool.query(query, (err, queryResponse) => {
-        if (loggedin !== undefined) {
-            user = queryResponse.rows[0];
-            object.loggedin = loggedin;
-            object.user = user;
-            return object
-        }});
-}
+//     data.loggedin = loggedin;
+//     if (loggedin !== undefined) {
+//         let userDetails;
+//             pool.query(query, (err, queryResponse) => {
+//                     userDetails = queryResponse.rows[0];
+//                     data.userDetails = userDetails;
+//                     console.log('this is from getuser() inside pool.query')
+//                     console.log(data)
+//                     callback(response);
+//                 })
+//     } else {
+//         console.log('this is from getuser()')
+//         console.log(data)
+//         callback();
+//         return data;
+//     }
+// };
+
+//     let test = (data, response) => {
+//         let queryString = 'SELECT * FROM activities';
+//         pool.query(queryString, (err, queryResult) => {
+//             data.activities = [];
+//             for (let i = 0; i < queryResult.rows.length; i++){
+//                 data.activities.push(queryResult.rows[i]);
+//             }
+//             response.render('homePage', data);
+//             console.log(data.userDetails.name)
+//         })
+//     };
+
 
 /**
  * ===================================
@@ -69,8 +90,16 @@ function getUser(request, object) {
  * ===================================
  */
 
-// THE LONG METHOD
+// // Home Page (shorter)
+// app.get('/', (request, response) => {
 
+//     let data = {};
+//     getUser(request, data, test(data, response))
+// });
+
+
+
+// THE LONG METHOD
 
 // Home Page
 app.get('/', (request, response) => {
@@ -124,6 +153,7 @@ app.get('/activities/', (request, response) => {
         });
     });
 })
+
 
 // Activity Page
 app.get('/activities/:id', (request, response) => {
