@@ -1,4 +1,4 @@
-/**
+/**w
  * ===================================
  * Configurations and set up
  * ===================================
@@ -71,18 +71,6 @@ app.engine('jsx', reactEngine);
 //     }
 // };
 
-//     let test = (data, response) => {
-//         let queryString = 'SELECT * FROM activities';
-//         pool.query(queryString, (err, queryResult) => {
-//             data.activities = [];
-//             for (let i = 0; i < queryResult.rows.length; i++){
-//                 data.activities.push(queryResult.rows[i]);
-//             }
-//             response.render('homePage', data);
-//             console.log(data.userDetails.name)
-//         })
-//     };
-
 
 /**
  * ===================================
@@ -90,16 +78,9 @@ app.engine('jsx', reactEngine);
  * ===================================
  */
 
-// // Home Page (shorter)
-// app.get('/', (request, response) => {
-
-//     let data = {};
-//     getUser(request, data, test(data, response))
-// });
-
-
-
 // THE LONG METHOD
+
+let object = {};
 
 // Home Page
 app.get('/', (request, response) => {
@@ -107,24 +88,17 @@ app.get('/', (request, response) => {
     var userid = request.cookies['id']
     let query = "SELECT * FROM users WHERE id ='"+userid+"'"
 
+    // Find user
     pool.query(query, (err, queryResponse) => {
         let user;
         if (loggedin !== undefined) {
             user = queryResponse.rows[0];
         }
-        const queryString = 'SELECT * FROM activities';
-
-        pool.query(queryString, (err, queryResult) => {
-            let object = {};
-            object.activities = [];
-            for (let i = 0; i < queryResult.rows.length; i++){
-                object.activities.push(queryResult.rows[i]);
-            }
-            object.loggedin = loggedin;
-            object.user = user;
-            response.render('homePage', object);
-        });
-    });
+        object.loggedin = loggedin;
+        object.user = user;
+        console.log(object)
+        response.render('homePage', object);
+     });
 })
 
 
@@ -134,21 +108,27 @@ app.get('/activities/', (request, response) => {
     var userid = request.cookies['id']
     let query = "SELECT * FROM users WHERE id ='"+userid+"'"
 
+    // Find User
     pool.query(query, (err, queryResponse) => {
         let user;
         if (loggedin !== undefined) {
             user = queryResponse.rows[0];
         }
-        const queryString = 'SELECT * FROM activities';
+        object.loggedin = loggedin;
+        object.user = user;
 
+        // Find data
+        const queryString =
+        `SELECT activity.id, activity.title, activity.description, activity.price, activity.category, activity.franchaise, activity.activitypicture1, activitypicture2,
+        activitypicture3
+        FROM activity
+        `
         pool.query(queryString, (err, queryResult) => {
-            let object = {};
-            object.activities = [];
+            object.activity = [];
             for (let i = 0; i < queryResult.rows.length; i++){
-                object.activities.push(queryResult.rows[i]);
+                object.activity.push(queryResult.rows[i]);
             }
-            object.loggedin = loggedin;
-            object.user = user;
+            console.log(object)
             response.render('activitiesPage', object);
         });
     });
@@ -161,24 +141,137 @@ app.get('/activities/:id', (request, response) => {
     var userid = request.cookies['id']
     let query = "SELECT * FROM users WHERE id ='"+userid+"'"
 
+    // Find user
     pool.query(query, (err, queryResponse) => {
         let user;
         if (loggedin !== undefined) {
             user = queryResponse.rows[0];
         }
+        object.loggedin = loggedin;
+        object.user = user;
 
-        const queryString = "SELECT * FROM activities WHERE id ='"+request.params.id+"'"
-        pool.query(queryString, (err, queryResult) => {
-            let object = {};
-            object.activities = [];
-            object.activities.push(queryResult.rows[0])
-            object.loggedin = loggedin;
-            object.user = user;
+        // Find activity
+        const queryActOut =
+        `SELECT
+        activity_place.activity_id, activity.title, activity.description, activity.price, activity.category, activity.franchaise, activity_place.place_id, activity.activitypicture1, activitypicture2,
+        activitypicture3, place.outletname, place.website, place.urltext, place.address
+        FROM activity_place INNER JOIN activity
+        ON ( activity.id = activity_place.activity_id )
+        INNER JOIN place
+        ON ( place.id = activity_place.place_id )
+        WHERE activity_place.activity_id =`+request.params.id
+
+        pool.query(queryActOut, (err, queryResult) => {
+            object.activity = [];
+            object.outlet = [];
+            for (let i = 0; i < queryResult.rows.length; i++){
+                object.activity.push(queryResult.rows[i])
+            }
             console.log(object)
             response.render('activityPage', object);
         })
     })
+});
+
+
+// Activity & Branch Page
+app.get('/activities/:id/:placeid', (request, response) => {
+    var loggedin = request.cookies['loggedin'];
+    var userid = request.cookies['id']
+    let query = "SELECT * FROM users WHERE id ='"+userid+"'"
+
+    // Find user
+    pool.query(query, (err, queryResponse) => {
+        let user;
+        if (loggedin !== undefined) {
+            user = queryResponse.rows[0];
+        }
+        object.loggedin = loggedin;
+        object.user = user;
+
+        // Find activity
+        const queryActOut =
+        `SELECT
+        activity_place.activity_id, activity.title, activity.description, activity.price, activity.category, activity_place.place_id, place.outletname, place.franchaise, place.website, place.urltext, place.address, place.placePicture1, place.placePicture2, place.placePicture3
+        FROM activity_place INNER JOIN activity
+        ON ( activity.id = activity_place.activity_id )
+        INNER JOIN place
+        ON ( place.id = activity_place.place_id )
+        WHERE activity_place.activity_id =`+request.params.id+` AND activity_place.place_id =`+request.params.placeid;
+
+        pool.query(queryActOut, (err, queryResult) => {
+            object.activity = [];
+            for (let i = 0; i < queryResult.rows.length; i++){
+                object.activity.push(queryResult.rows[i]);
+            }
+
+                // Find Outlets
+            const queryActOut2 =
+            `SELECT
+            place.outletname, activity_place.activity_id, activity_place.place_id
+            FROM activity_place INNER JOIN activity
+            ON ( activity.id = activity_place.activity_id )
+            INNER JOIN place
+            ON ( place.id = activity_place.place_id )
+            WHERE activity_place.activity_id =`+request.params.id+` AND activity_place.place_id !=`+request.params.placeid;
+
+            pool.query(queryActOut2, (err, queryResult) => {
+                object.outlet = [];
+                for (let i = 0; i < queryResult.rows.length; i++){
+                    object.outlet.push(queryResult.rows[i]);
+                }
+
+                    // Find Opening Hours
+                const queryActOut3 =
+                `SELECT
+                openingHours.day_of_week, openingHours.time_open, openingHours.time_close
+                FROM openingHours
+                INNER JOIN place
+                ON (openingHours.place_id = place.id)
+                WHERE openingHours.place_id =`+request.params.placeid;
+                    pool.query(queryActOut3, (err, queryResult) => {
+                        object.openingHours =[];
+                        for (let i = 0; i < queryResult.rows.length; i++){
+                            object.openingHours.push(queryResult.rows[i]);
+                        }
+                        console.log(object)
+                        response.render('branchActPage', object);
+                    })
+            })
+        })
+    })
 })
+
+
+// Create new activity
+app.get('/new', (request, response) => {
+    var loggedin = request.cookies['loggedin'];
+    var userid = request.cookies['id']
+    let query = "SELECT * FROM users WHERE id ='"+userid+"'"
+
+    // Find user
+    pool.query(query, (err, queryResponse) => {
+        let user;
+        if (loggedin !== undefined) {
+            user = queryResponse.rows[0];
+        }
+        object.loggedin = loggedin;
+        object.user = user;
+        response.render('createPage', object)
+    })
+})
+
+// Post new activity to database
+app.post('/new', (request,response) => {
+    console.log(request.body.title)
+    `INSER INTO activity
+    (title, place_id, description, price, category, activityPicture1, activityPicture2, activityPicture3)
+    VALUES
+    (${request.body.title}, `
+    response.redirect('/activities/id')
+})
+
+
 
 // Login Route
 app.post('/users/login', (request, response) => {

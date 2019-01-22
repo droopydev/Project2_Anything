@@ -4,7 +4,7 @@ class SideBar_NotLoggedIn extends React.Component {
     render() {
         return (
                 <div className="wrapper">
-                    <nav id="sidebar">
+                    <nav id="sidebar" className="active">
                         <a href="/">
                         <div className="sidebar-header">
                             <h3>Anything!</h3>
@@ -15,9 +15,6 @@ class SideBar_NotLoggedIn extends React.Component {
                             <p>Hello There!</p>
                             <li>
                                 <a href="/activities/">Activities</a>
-                            </li>
-                            <li>
-                                <a href="#">Plan For Me</a>
                             </li>
                         </ul>
 

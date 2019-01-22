@@ -13,15 +13,29 @@ function slideSidebar() {
     );
 }
 
-// function sideBarHeader() {
-//     const header = document.querySelector('header')
-//     function toggleActive() {
-//         header
-//     }
-// }
+function buttonOutlets() {
+    function changeState() {
+        const bigButton = document.querySelector('#dropdownMenuButton')
+        bigButton.innerHTML = 'Playnation | '+ event.target.innerHTML
+        bigButton.classList.add('colorButton');
+        console.log(bigButton.innerHTML);
+
+    }
+    let buttons = document.querySelectorAll('.dropdown-item')
+    for(var i = 0; i < buttons.length; i++){
+        buttons[i].addEventListener("click", function() {
+            console.log(event.target)
+            console.log("Click worked");
+            changeState();
+        })
+    }
+}
 
 
 
 window.onload = function(){
     slideSidebar();
+    buttonOutlets();
+    console.log('hello')
+    console.log(this.props)
 };

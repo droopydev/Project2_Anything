@@ -35,7 +35,7 @@ class DefaultLayout extends React.Component {
 
             <body>
                 {sideBarState}
-                    <div id="content">
+                    <div id="content" className="active">
                         <PopUp_LogIn />
                         {this.props.children}
                     </div>

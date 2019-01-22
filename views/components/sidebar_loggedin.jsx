@@ -4,7 +4,7 @@ class SideBar_LoggedIn extends React.Component {
     render() {
         return (
                 <div className="wrapper">
-                    <nav id="sidebar">
+                    <nav id="sidebar" className="active">
                         <a href="/">
                         <div className="sidebar-header" id="header">
                             <h3>Anything!</h3>
@@ -17,21 +17,12 @@ class SideBar_LoggedIn extends React.Component {
                                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Profile</a>
                                 <ul className="collapse list-unstyled" id="homeSubmenu">
                                     <li>
-                                        <a href="#">Profile Page</a>
-                                    </li>
-                                    <li>
                                         <a href="#">Favourites</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Create an Activity</a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="/activities/">Activities</a>
-                            </li>
-                            <li>
-                                <a href="#">Plan For Me</a>
                             </li>
 
                         </ul>
@@ -51,3 +42,7 @@ class SideBar_LoggedIn extends React.Component {
 };
 
 module.exports = SideBar_LoggedIn
+
+            // <li>
+            //     <a href="/new">Create an Activity</a>
+            // </li>

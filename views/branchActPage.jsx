@@ -11,10 +11,10 @@ import { MdTimelapse } from "react-icons/md";
 
 class ActivityPage extends React.Component {
     render() {
-        let outlets = this.props.activity.map( (outlet, index) => {
+        let outlets = this.props.outlet.map( (outlet, index) => {
         let href = '/activities/'+outlet.activity_id+'/'+outlet.place_id
         console.log(href);
-        return <a className="dropdown-item" href={href}>{outlet.outletname}</a>
+        return <a class="dropdown-item" href={href}>{outlet.outletname}</a>
         });
         return (
             <DefaultLayout loggedIn={this.props.loggedin} user={this.props.user}>
@@ -25,13 +25,13 @@ class ActivityPage extends React.Component {
                 <div id="magicCarousel" className="carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src={this.props.activity[0].activitypicture1} className="carouselImage" alt="..." />
+                            <img src={this.props.activity[0].placepicture1} className="carouselImage" alt="..." />
                         </div>
                         <div className="carousel-item">
-                            <img src={this.props.activity[0].activitypicture2} className="carouselImage" alt="..." />
+                            <img src={this.props.activity[0].placepicture2} className="carouselImage" alt="..." />
                         </div>
                         <div className="carousel-item">
-                            <img src={this.props.activity[0].activitypicture3} className="carouselImage" alt="..." />
+                            <img src={this.props.activity[0].placepicture3} className="carouselImage" alt="..." />
                         </div>
                     </div>
                     <a className="carousel-control-prev" href="#magicCarousel" role="button" data-slide="prev">
@@ -48,16 +48,16 @@ class ActivityPage extends React.Component {
                     <h6 className="card-text">{this.props.activity[0].category}</h6>
                     <h3>{this.props.activity[0].title} @
 
-                        <div className="dropdown">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Playnation | Select Outlet
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle colorButton" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Playnation | {this.props.activity[0].outletname}
                             </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             {outlets}
                             </div>
                         </div>
                     </h3>
-                    <p><FaMapMarkerAlt className="react-icons"/>{this.props.activity.length} Outlets </p>
+                    <p><FaMapMarkerAlt className="react-icons"/>{this.props.activity[0].address}</p>
                     <a href={this.props.activity[0].website}><FaLink className="react-icons"/>{this.props.activity[0].urltext}</a>
                     <p><IoIosPricetags className="react-icons"/>${this.props.activity[0].price} per person</p>
                     <p><MdTimelapse className="react-icons" />Opening hours</p>
@@ -68,10 +68,21 @@ class ActivityPage extends React.Component {
                                 <li>Wednesday: </li>
                                 <li>Thursday: </li>
                             </div>
-                            <div className='timingDiv TwoC'>
+                            <div className='timingDiv OneB'>
+                                <li>{this.props.openingHours[0].time_open} - {this.props.openingHours[0].time_close}</li>
+                                <li>{this.props.openingHours[1].time_open} - {this.props.openingHours[1].time_close}</li>
+                                <li>{this.props.openingHours[2].time_open} - {this.props.openingHours[2].time_close}</li>
+                                <li>{this.props.openingHours[3].time_open} - {this.props.openingHours[3].time_close}</li>
+                            </div>
+                            <div className='timingDiv TwoA'>
                                 <li>Friday: </li>
                                 <li>Saturday: </li>
                                 <li>Sunday: </li>
+                            </div>
+                            <div className='timingDiv TwoB'>
+                                <li>{this.props.openingHours[4].time_open} - {this.props.openingHours[4].time_close}</li>
+                                <li>{this.props.openingHours[5].time_open} - {this.props.openingHours[5].time_close}</li>
+                                <li>{this.props.openingHours[6].time_open} - {this.props.openingHours[6].time_close}</li>
                             </div>
                         </ul>
                     <div id="description">
@@ -97,15 +108,15 @@ module.exports = ActivityPage
             // </div>
 
 
-// <div className="dropdown">
-//   <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+// <div class="dropdown">
+//   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 //     Dropdown link
 //   </a>
 
-//   <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-//     <a className="dropdown-item" href="#">Action</a>
-//     <a className="dropdown-item" href="#">Another action</a>
-//     <a className="dropdown-item" href="#">Something else here</a>
+//   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+//     <a class="dropdown-item" href="#">Action</a>
+//     <a class="dropdown-item" href="#">Another action</a>
+//     <a class="dropdown-item" href="#">Something else here</a>
 //   </div>
 // </div>
 
@@ -114,8 +125,22 @@ module.exports = ActivityPage
         // render() {
         // let outlets = this.props.activity.map( (outlet, index) => {
         //     let href = '/'+outlet.place_id+'/'+outlet.activity_id+'/';
-        //     return <a className="dropdown-item" href={href}>{outlet.outletname}</a>
+        //     return <a class="dropdown-item" href={href}>{outlet.outletname}</a>
 
         // let outlets = this.props.activity.map( (outlet, index) => {
         //     let href = '/'+outlet.place_id+'/'+outlet.activity_id+'/';
-        //     return <button className="dropdown-item" type="button">{outlet.outletname}</button>
+        //     return <button class="dropdown-item" type="button">{outlet.outletname}</button>
+
+                        //         <ul id='openinghours'>
+                        //     <div className='timingDiv'>
+                        //         <li>Monday: {this.props.openingHours[0].time_open} - {this.props.openingHours[0].time_close}</li>
+                        //         <li>Tuesday: {this.props.openingHours[1].time_open} - {this.props.openingHours[1].time_close}</li>
+                        //         <li>Wednesday: {this.props.openingHours[2].time_open} - {this.props.openingHours[2].time_close}</li>
+                        //         <li>Thursday: {this.props.openingHours[3].time_open} - {this.props.openingHours[3].time_close}</li>
+                        //     </div>
+                        //     <div className='timingDiv-two'>
+                        //         <li>Friday: {this.props.openingHours[4].time_open} - {this.props.openingHours[4].time_close}</li>
+                        //         <li>Saturday: {this.props.openingHours[5].time_open} - {this.props.openingHours[5].time_close}</li>
+                        //         <li>Sunday: {this.props.openingHours[6].time_open} - {this.props.openingHours[6].time_close}</li>
+                        //     </div>
+                        // </ul>
